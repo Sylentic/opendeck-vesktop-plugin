@@ -1,0 +1,53 @@
+{
+	"Name": "Vesktop",
+	"Author": "Sylentic",
+	"Version": "0.1.0",
+	"Category": "Vesktop",
+	"Icon": "icon",
+	"OS": [{ "Platform": "linux" }],
+	"CodePathLin": "opendeck-vesktop-x86_64-unknown-linux-gnu",
+	"CodePaths": {
+		"x86_64-unknown-linux-gnu": "opendeck-vesktop-x86_64-unknown-linux-gnu",
+		"aarch64-unknown-linux-gnu": "opendeck-vesktop-aarch64-unknown-linux-gnu"
+	},
+	"Actions": [
+		{
+			"UUID": "com.sylentic.opendeck-vesktop.togglemute",
+			"Name": "Toggle Mute",
+			"Icon": "actions/mute_0",
+			"Tooltip": "Mute and unmute yourself in Vesktop",
+			"Controllers": ["Keypad"],
+			"DisableAutomaticStates": true,
+			"States": [{ "Image": "actions/mute_0" }, { "Image": "actions/mute_1" }]
+		},
+		{
+			"UUID": "com.sylentic.opendeck-vesktop.toggledeafen",
+			"Name": "Toggle Deafen",
+			"Icon": "actions/deafen_0",
+			"Tooltip": "Deafen and undeafen yourself in Vesktop",
+			"Controllers": ["Keypad"],
+			"DisableAutomaticStates": true,
+			"States": [{ "Image": "actions/deafen_0" }, { "Image": "actions/deafen_1" }]
+		},
+		{
+			"UUID": "com.sylentic.opendeck-vesktop.pushtomute",
+			"Name": "Push to Mute",
+			"Icon": "actions/pushtomute_0",
+			"Tooltip": "Mute yourself while holding the key",
+			"Controllers": ["Keypad"],
+			"DisableAutomaticStates": true,
+			"SupportedInMultiActions": false,
+			"States": [{ "Image": "actions/pushtomute_0" }, { "Image": "actions/pushtomute_1" }]
+		},
+		{
+			"UUID": "com.sylentic.opendeck-vesktop.pushtotalk",
+			"Name": "Push to Talk",
+			"Icon": "actions/pushtotalk_0",
+			"Tooltip": "Unmute yourself while holding the key",
+			"Controllers": ["Keypad"],
+			"DisableAutomaticStates": true,
+			"SupportedInMultiActions": false,
+			"States": [{ "Image": "actions/pushtotalk_0" }, { "Image": "actions/pushtotalk_1" }]
+		}
+	]
+}

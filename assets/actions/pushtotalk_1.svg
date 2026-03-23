@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="72" height="72" viewBox="0 0 72 72">
+  <rect width="72" height="72" rx="8" fill="#57f287"/>
+  <path d="M36 16c-5 0-9 4-9 9v11c0 5 4 9 9 9s9-4 9-9V25c0-5-4-9-9-9z" fill="white"/>
+  <path d="M49 34c0 7.2-5.8 13-13 13s-13-5.8-13-13h-4c0 8.9 6.7 16.2 15 17v5h-6v4h16v-4h-6v-5c8.3-.8 15-8.1 15-17h-4z" fill="white"/>
+  <text x="36" y="64" text-anchor="middle" font-size="8" fill="white" font-family="sans-serif">PTT</text>
+</svg>

@@ -1,0 +1,19 @@
+[package]
+name = "opendeck-vesktop"
+version = "0.1.0"
+edition = "2024"
+description = "OpenDeck / Stream Deck plugin for controlling Vesktop voice (mute, deafen, push-to-talk, push-to-mute)"
+license = "GPL-3.0-or-later"
+repository = "https://github.com/Sylentic/opendeck-vesktop-plugin"
+keywords = ["opendeck", "stream-deck", "vesktop", "discord", "voice"]
+categories = ["multimedia"]
+
+[dependencies]
+openaction = "2.3"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+tokio = { version = "1.48", features = ["rt-multi-thread", "macros", "sync", "net"] }
+tokio-tungstenite = "0.26"
+futures-util = { version = "0.3", features = ["sink"] }
+log = "0.4"
+simplelog = "0.12"

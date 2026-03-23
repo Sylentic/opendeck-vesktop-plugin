@@ -1,0 +1,14 @@
+# Rust build output
+/target/
+
+# Editor / IDE
+.vscode/
+.idea/
+*.iml
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Log files
+*.log
