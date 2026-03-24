@@ -20,6 +20,16 @@ pub fn spawn_state_listener() {
 				if state.self_deaf { 1 } else { 0 },
 			)
 			.await;
+			update_all_buttons(
+				ToggleVideoAction::UUID,
+				if state.local_video { 1 } else { 0 },
+			)
+			.await;
+			update_all_buttons(
+				ToggleStreamAction::UUID,
+				if state.streaming { 1 } else { 0 },
+			)
+			.await;
 		}
 	});
 }
@@ -140,6 +150,62 @@ impl Action for PushToTalkAction {
 		_settings: &Self::Settings,
 	) -> OpenActionResult<()> {
 		bridge::send_command("mute");
+		Ok(())
+	}
+}
+
+// --- Toggle Video ---
+
+pub struct ToggleVideoAction;
+
+#[async_trait]
+impl Action for ToggleVideoAction {
+	const UUID: ActionUuid = "com.sylentic.opendeck-vesktop.togglevideo";
+	type Settings = HashMap<String, String>;
+
+	async fn key_up(
+		&self,
+		_instance: &Instance,
+		_settings: &Self::Settings,
+	) -> OpenActionResult<()> {
+		bridge::send_command("toggleVideo");
+		Ok(())
+	}
+
+	async fn will_appear(
+		&self,
+		_instance: &Instance,
+		_settings: &Self::Settings,
+	) -> OpenActionResult<()> {
+		bridge::send_command("getState");
+		Ok(())
+	}
+}
+
+// --- Toggle Stream ---
+
+pub struct ToggleStreamAction;
+
+#[async_trait]
+impl Action for ToggleStreamAction {
+	const UUID: ActionUuid = "com.sylentic.opendeck-vesktop.togglestream";
+	type Settings = HashMap<String, String>;
+
+	async fn key_up(
+		&self,
+		_instance: &Instance,
+		_settings: &Self::Settings,
+	) -> OpenActionResult<()> {
+		bridge::send_command("toggleStream");
+		Ok(())
+	}
+
+	async fn will_appear(
+		&self,
+		_instance: &Instance,
+		_settings: &Self::Settings,
+	) -> OpenActionResult<()> {
+		bridge::send_command("getState");
 		Ok(())
 	}
 }

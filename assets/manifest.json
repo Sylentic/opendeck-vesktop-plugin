@@ -1,7 +1,7 @@
 {
 	"Name": "Vesktop",
 	"Author": "Sylentic",
-	"Version": "0.1.0",
+	"Version": "0.2.0",
 	"Category": "Vesktop",
 	"Icon": "icon",
 	"OS": [{ "Platform": "linux" }],
@@ -48,6 +48,24 @@
 			"DisableAutomaticStates": true,
 			"SupportedInMultiActions": false,
 			"States": [{ "Image": "actions/pushtotalk_0" }, { "Image": "actions/pushtotalk_1" }]
+		},
+		{
+			"UUID": "com.sylentic.opendeck-vesktop.togglevideo",
+			"Name": "Toggle Camera",
+			"Icon": "actions/video_0",
+			"Tooltip": "Turn your webcam on or off",
+			"Controllers": ["Keypad"],
+			"DisableAutomaticStates": true,
+			"States": [{ "Image": "actions/video_0" }, { "Image": "actions/video_1" }]
+		},
+		{
+			"UUID": "com.sylentic.opendeck-vesktop.togglestream",
+			"Name": "Toggle Stream",
+			"Icon": "actions/stream_0",
+			"Tooltip": "Start or stop your screen share",
+			"Controllers": ["Keypad"],
+			"DisableAutomaticStates": true,
+			"States": [{ "Image": "actions/stream_0" }, { "Image": "actions/stream_1" }]
 		}
 	]
 }

@@ -24,6 +24,10 @@ pub struct VoiceState {
 	pub self_mute: bool,
 	#[serde(rename = "selfDeaf")]
 	pub self_deaf: bool,
+	#[serde(rename = "localVideo")]
+	pub local_video: bool,
+	#[serde(rename = "streaming")]
+	pub streaming: bool,
 }
 
 /// Global channel for sending commands to Vencord.

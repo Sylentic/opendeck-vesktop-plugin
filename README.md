@@ -1,13 +1,13 @@
 # OpenDeck Vesktop Plugin
 
-An [OpenAction](https://openaction.amankhanna.me/) / [OpenDeck](https://github.com/nekename/OpenDeck) plugin for controlling **Vesktop** (Discord voice: mute, deafen, push-to-talk, push-to-mute) from your Elgato Stream Deck.
+An [OpenAction](https://openaction.amankhanna.me/) / [OpenDeck](https://github.com/nekename/OpenDeck) plugin for controlling **Vesktop** (Discord voice, camera, and screen share) from your Elgato Stream Deck.
 
 ## Why a custom plugin?
 
 The existing [OpenAction Discord plugin](https://marketplace.rivul.us/plugin/me.amankhanna.oadiscord) uses Discord's native IPC RPC protocol (`discord-ipc-*` sockets). Vesktop doesn't implement the voice-control subset of that protocol (its built-in arRPC only supports Rich Presence). This plugin works around that limitation with a **two-part bridge architecture**:
 
 1. **OpenDeck plugin** (Rust) — runs as a standard OpenAction plugin and hosts a local WebSocket server on `127.0.0.1:28196`.
-2. **Vencord plugin** (TypeScript) — runs inside Vesktop, connects to the WebSocket server, and calls Discord's internal `toggleSelfMute()` / `toggleSelfDeaf()` functions.
+2. **Vencord plugin** (TypeScript) — runs inside Vesktop, connects to the WebSocket server, and calls Discord's internal voice/video/streaming functions.
 
 ## Actions
 
@@ -17,6 +17,8 @@ The existing [OpenAction Discord plugin](https://marketplace.rivul.us/plugin/me.
 | **Toggle Deafen** | Deafen / undeafen yourself |
 | **Push to Mute** | Muted while holding key |
 | **Push to Talk** | Unmuted while holding key |
+| **Toggle Camera** | Turn your webcam on / off |
+| **Toggle Stream** | Start / stop screen sharing |
 
 Button states sync in real-time — if you mute from Vesktop's UI, the Stream Deck button updates automatically.
 
@@ -94,10 +96,12 @@ Commands (OpenDeck → Vencord):
 - `{"cmd": "toggleDeafen"}` — toggle self-deafen
 - `{"cmd": "mute"}` / `{"cmd": "unmute"}` — set mute state
 - `{"cmd": "deafen"}` / `{"cmd": "undeafen"}` — set deafen state
-- `{"cmd": "getState"}` — request current voice state
+- `{"cmd": "toggleVideo"}` — toggle webcam
+- `{"cmd": "toggleStream"}` — start/stop screen share
+- `{"cmd": "getState"}` — request current state
 
 State (Vencord → OpenDeck):
-- `{"selfMute": bool, "selfDeaf": bool}`
+- `{"selfMute": bool, "selfDeaf": bool, "localVideo": bool, "streaming": bool}`
 
 ## License
 

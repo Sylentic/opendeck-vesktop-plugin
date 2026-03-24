@@ -11,14 +11,17 @@
  */
 
 import definePlugin from "@utils/types";
-import { findByPropsLazy } from "@webpack";
-import { FluxDispatcher, MediaEngineStore } from "@webpack/common";
+import { findByPropsLazy, findStoreLazy } from "@webpack";
+import { FluxDispatcher } from "@webpack/common";
 
 const BRIDGE_PORT = 28196;
 const RECONNECT_DELAY_MS = 5000;
 
-// Discord's internal module for toggling self-mute and self-deafen.
+// Discord's internal modules.
 const MediaEngineActions = findByPropsLazy("toggleSelfMute", "toggleSelfDeaf");
+const MediaEngineStore = findStoreLazy("MediaEngineStore");
+const ApplicationStreamingStore = findStoreLazy("ApplicationStreamingStore");
+const ApplicationStreamingActions = findByPropsLazy("startStreaming", "stopStreaming");
 
 let ws: WebSocket | null = null;
 let reconnectTimer: ReturnType<typeof setTimeout> | null = null;
@@ -29,8 +32,10 @@ function sendState() {
 
     const selfMute = MediaEngineStore.isSelfMute();
     const selfDeaf = MediaEngineStore.isSelfDeaf();
+    const localVideo = !MediaEngineStore.getLocalVideoDisabled();
+    const streaming = !!ApplicationStreamingStore.getCurrentUserActiveStream();
 
-    ws.send(JSON.stringify({ selfMute, selfDeaf }));
+    ws.send(JSON.stringify({ selfMute, selfDeaf, localVideo, streaming }));
 }
 
 function handleCommand(data: string) {
@@ -68,6 +73,23 @@ function handleCommand(data: string) {
                 MediaEngineActions.toggleSelfDeaf();
             }
             break;
+        case "toggleVideo":
+            // Toggle video by dispatching the update event with inverted state
+            const currentVideoDisabled = MediaEngineStore.getLocalVideoDisabled();
+            FluxDispatcher.dispatch({
+                type: "CALL_LOCAL_VIDEO_UPDATED",
+                videoDisabled: !currentVideoDisabled
+            });
+            break;
+        case "toggleStream": {
+            const activeStream = ApplicationStreamingStore.getCurrentUserActiveStream();
+            if (activeStream) {
+                ApplicationStreamingActions.stopStreaming(activeStream);
+            } else {
+                ApplicationStreamingActions.startStreamingUI();
+            }
+            break;
+        }
         case "getState":
             sendState();
             return; // don't send state twice
@@ -133,9 +155,12 @@ export default definePlugin({
         running = true;
         connect();
 
-        // Listen for mute/deafen changes so we can push state to OpenDeck.
+        // Listen for voice/video/stream changes so we can push state to OpenDeck.
         FluxDispatcher.subscribe("AUDIO_TOGGLE_SELF_MUTE", onVoiceStateChange);
         FluxDispatcher.subscribe("AUDIO_TOGGLE_SELF_DEAF", onVoiceStateChange);
+        FluxDispatcher.subscribe("CALL_LOCAL_VIDEO_UPDATED", onVoiceStateChange);
+        FluxDispatcher.subscribe("STREAM_CREATE", onVoiceStateChange);
+        FluxDispatcher.subscribe("STREAM_DELETE", onVoiceStateChange);
     },
 
     stop() {
@@ -143,6 +168,9 @@ export default definePlugin({
 
         FluxDispatcher.unsubscribe("AUDIO_TOGGLE_SELF_MUTE", onVoiceStateChange);
         FluxDispatcher.unsubscribe("AUDIO_TOGGLE_SELF_DEAF", onVoiceStateChange);
+        FluxDispatcher.unsubscribe("CALL_LOCAL_VIDEO_UPDATED", onVoiceStateChange);
+        FluxDispatcher.unsubscribe("STREAM_CREATE", onVoiceStateChange);
+        FluxDispatcher.unsubscribe("STREAM_DELETE", onVoiceStateChange);
 
         if (reconnectTimer) {
             clearTimeout(reconnectTimer);

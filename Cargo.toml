@@ -1,6 +1,6 @@
 [package]
 name = "opendeck-vesktop"
-version = "0.1.0"
+version = "0.2.0"
 edition = "2024"
 description = "OpenDeck / Stream Deck plugin for controlling Vesktop voice (mute, deafen, push-to-talk, push-to-mute)"
 license = "GPL-3.0-or-later"

@@ -29,6 +29,8 @@ async fn main() -> OpenActionResult<()> {
 	register_action(ToggleDeafenAction).await;
 	register_action(PushToMuteAction).await;
 	register_action(PushToTalkAction).await;
+	register_action(ToggleVideoAction).await;
+	register_action(ToggleStreamAction).await;
 
 	run(std::env::args().collect()).await
 }
